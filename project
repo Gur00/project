@@ -1,0 +1,94 @@
+!/usr/bin/env python
+import time   # for delay
+imtport os, pygame, sys
+
+pygame.init() # intialise graphical interface
+pygame.display.set_caption("Script")
+screenWidth = 1000
+screenHeight = 650
+scree = pygame.display.set_mode([screenWidth, screenHeight], 0, 32)
+bkground = pygame.Surface((screenWidth, screenHeight))
+segment = 0
+segments = 5
+textHeight = screenHeight / segments
+textSurface = [ pygame.Surface((screenWidth, textHeight))
+for s in range(0, segments+1)]
+
+# colour and font size for text
+bkgroundc = (0,0,0)
+textc = (255, 255, 255)
+backgroung.fill(bkground)  # colour the background
+scrollsize = 28
+font = pygame.font.Font(None, textHeight)
+numoflines = 0 # intiale values
+scriptlines = list()
+
+# open the script file
+def getScript():
+    global numoflines, scriptlines
+    nfile = open("scriptlines.txt", "r")
+    for line in nfile.readlines():
+        scriptlines.append(line)
+        numberOfLines += 1
+    nfile.close()
+    
+def drawWords(index, offset):
+    textRect = textSurface[index].get_rect()
+    textRect.centerx = screenWidth / 2
+    textRect.top = screenHeight - (textHeight * index) - offset
+    screen.blit(textSurface[index], textRect)
+ 
+#draw to the screen 
+def drawScreeen(offset):
+    global segment
+    screen.blit(background, [0,0]) #Set background colour
+    for index in range (0, segments +1):
+        segment +=1
+        if(segment > segments):
+            segment = 0
+        drawWords(segment, offset)
+        pygame.display.update()
+        
+def setWords(index, segment) :
+    endOfLine = False
+    margin = 30 
+    words = scriptlines[index].split()
+    wordsavailable = len(words)
+    wordsToUse = 0
+    wordsWidth = 0
+    tryLine = ""
+    while (wordsWidth < screenWidth - margin and wordsavailable >= wordsToUse +1):
+        tryLine = ""
+        wordsToUse += 1
+        for test in range(0, wordsToUse):
+            tryLine = tryLine + words[test] + ""
+        textSurface[segment] = font.render(tryLine, True, textc, bkgroundc)
+        trywidth = textWidth.right
+        print tryLine
+        if wordsWidth > screenWidth - margin:
+            wordsToUse = wordsToUse -1
+        else
+            endOfLine = True
+        
+# terminate or close down the program
+def terminate():    
+    print("Closing down the program")
+    pygame.quite()
+    sys.exit()
+    
+def main():
+    print("Here is the Script")
+    getScript()
+    lines =0
+    while(lines < numberOfLines):
+        for i in range(segments, 0, -1):
+            textSurface[i] = textSurface[i-1]
+        lines = setWords(lines, 0)
+        offset = 0
+        while offset < textHeight:
+            drawScreeen(offset)
+            offset += scrollsize
+    time.sleep(3.0)
+    terminate()
+
+
